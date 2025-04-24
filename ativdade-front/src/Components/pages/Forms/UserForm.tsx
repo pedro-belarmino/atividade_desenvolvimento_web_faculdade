@@ -29,6 +29,7 @@ const FIELD_LIMITS = {
 export default function UserForm() {
     const [aluno, setAluno] = useState<alunoType>(initialAluno)
     const [errorSnackbar, setErrorSnackbar] = useState(false)
+    const [successSnackbar, setSuccessSnackbar] = useState(false)
     const [errorSnackbarMessage, setErrorSnackbarMessage] = useState('')
     const [characterCount, setCharacterCount] = useState({
         nome: 0,
@@ -48,6 +49,7 @@ export default function UserForm() {
 
     const handleClose = () => {
         setErrorSnackbar(false)
+        setSuccessSnackbar(false)
     }
 
     const formatPhone = (value: string): string => {
@@ -130,6 +132,7 @@ export default function UserForm() {
             const response = await axios.post('http://localhost:8081/alunos', aluno)
             console.log(response.data)
             setAluno(initialAluno)
+            setSuccessSnackbar(true)
         } catch (error) {
             console.log(error)
             setErrorSnackbarMessage('Erro ao salvar aluno')
@@ -200,6 +203,16 @@ export default function UserForm() {
                     sx={{ width: '100%' }}
                 >
                     {errorSnackbarMessage}
+                </Alert>
+            </Snackbar>
+            <Snackbar open={successSnackbar} autoHideDuration={3000} onClose={handleClose}>
+                <Alert
+                    onClose={handleClose}
+                    severity="success"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                    Cadastro Feito com Sucesso
                 </Alert>
             </Snackbar>
         </div>
